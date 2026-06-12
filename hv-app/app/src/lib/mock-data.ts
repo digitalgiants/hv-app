@@ -116,7 +116,7 @@ export const sampleRace: RaceInfo = {
         {
           date: "05/29/13", track: "AP", distance: 1320, surface: "AW",
           raceType: "MdSpWt", purse: 38000, finish: 7,
-          speedFigure: null,
+          speedFigure: undefined,
           fractions: { time1: 23.5, time2: 45.71, final: 71.81 },
           positions: { start: 9, first: 9, second: 9, stretch: 7, finish: 7 },
           jockey: "Hill C", weight: 124,
@@ -294,7 +294,7 @@ export const sampleRace: RaceInfo = {
           date: "08/09/13", track: "DMR", distance: 1320, surface: "D",
           raceType: "Md40000", finish: 6,
           speedFigure: 82,
-          fractions: { time1: 22.52, time2: 45.89, final: null },
+          fractions: { time1: 22.52, time2: 45.89, final: undefined },
           positions: { start: 5, first: 5, second: 5, stretch: 6, finish: 6 },
           jockey: "Blanc B", weight: 120,
           comment: "Unhurried early; off rail; 3 wide turn and into lane; no rally",
