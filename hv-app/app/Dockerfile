@@ -34,7 +34,8 @@ COPY --from=builder                        /app/next.config.ts ./next.config.ts
 COPY --from=builder                        /app/package.json ./package.json
 
 # Full node_modules — needed for `next start` and Prisma CLI at runtime
-COPY --from=deps --chown=nextjs:nodejs /app/node_modules ./node_modules
+# Must come from builder (not deps) so the generated Prisma client is included
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
 
 # Prisma schema for db push at startup
 COPY --from=builder /app/prisma ./prisma
