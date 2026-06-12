@@ -285,7 +285,7 @@ export const sampleRace: RaceInfo = {
           date: "10/04/13", track: "SA", distance: 1430, surface: "D",
           raceType: "Md50000", finish: 3,
           speedFigure: 84,
-          fractions: { time1: 22.2, time2: 45.38, final: null },
+          fractions: { time1: 22.2, time2: 45.38, final: undefined },
           positions: { start: 6, first: 6, second: 6, stretch: 6, finish: 3 },
           jockey: "Espinoza V", weight: 122,
           comment: "Off bit slow; settled; off rail; angled in 1/2; 4wd into lane; rallied",
