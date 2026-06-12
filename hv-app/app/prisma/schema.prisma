@@ -1,0 +1,176 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Better Auth required models ────────────────────────────────────────────
+
+model user {
+  id            String    @id
+  name          String
+  email         String    @unique
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime
+  updatedAt     DateTime
+  sessions      session[]
+  accounts      account[]
+
+  // App-specific fields
+  role             String  @default("user")   // "user" | "admin"
+  licenseStatus    String  @default("inactive") // "inactive" | "active" | "suspended"
+  licenseType      String?                    // "lifetime" | "trial"
+  licensedAt       DateTime?
+  stripeCustomerId String?
+  stripePaymentId  String?
+  imports          DataImport[]
+}
+
+model session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  user      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+}
+
+model verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+}
+
+// ─── Racing data models ──────────────────────────────────────────────────────
+
+model Track {
+  id      String @id @default(cuid())
+  code    String @unique  // e.g. "AP", "AQU", "CD"
+  name    String
+  state   String?
+  country String @default("US")
+  races   Race[]
+
+  createdAt DateTime @default(now())
+}
+
+model Race {
+  id         String   @id @default(cuid())
+  trackId    String
+  track      Track    @relation(fields: [trackId], references: [id])
+  raceDate   DateTime @db.Date
+  raceNumber Int
+  distance   Int      // yards
+  surface    String   // "D" | "T" | "AW"
+  raceType   String   // "Stakes" | "Allowance" | "Claiming" | "Maiden" etc.
+  purse      Int?
+  conditions String?
+  entries    Entry[]
+
+  createdAt DateTime @default(now())
+
+  @@unique([trackId, raceDate, raceNumber])
+}
+
+model Horse {
+  id       String  @id @default(cuid())
+  name     String
+  sire     String?
+  dam      String?
+  damSire  String?
+  color    String?
+  sex      String? // "H" | "G" | "M" | "F" | "C" | "R"
+  foalYear Int?
+  foalState String?
+  entries  Entry[]
+
+  createdAt DateTime @default(now())
+
+  @@unique([name, foalYear])
+}
+
+model Entry {
+  id            String  @id @default(cuid())
+  raceId        String
+  race          Race    @relation(fields: [raceId], references: [id], onDelete: Cascade)
+  horseId       String
+  horse         Horse   @relation(fields: [horseId], references: [id])
+  postPosition  Int
+  programNumber String
+  jockey        String?
+  trainer       String?
+  owner         String?
+  weightLbs     Int?
+  morningLine   Float?
+  finishPosition Int?
+  rawData       Json    // full parsed CSV row preserved for future use
+
+  speedFigures  SpeedFigure[]
+  createdAt     DateTime @default(now())
+
+  @@unique([raceId, postPosition])
+}
+
+// Stores all speed/pace figures per entry per past race
+model SpeedFigure {
+  id         String   @id @default(cuid())
+  entryId    String
+  entry      Entry    @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  figureType String   // "brisnet" | "beyer" | "timeform" | "pace_early" | "pace_late"
+  value      Int?
+  raceDate   DateTime @db.Date
+
+  createdAt DateTime @default(now())
+}
+
+// ─── App operational models ──────────────────────────────────────────────────
+
+model DataImport {
+  id               String   @id @default(cuid())
+  userId           String
+  user             user     @relation(fields: [userId], references: [id])
+  filename         String
+  source           String   // "brisnet_csv" | "equibase_csv" | "brisnet_api" | "equibase_api"
+  status           String   @default("pending") // "pending" | "processing" | "completed" | "failed"
+  recordsProcessed Int      @default(0)
+  errors           String?
+  completedAt      DateTime?
+
+  createdAt DateTime @default(now())
+}
+
+// Idempotent Stripe event log — prevents double-processing webhooks
+model StripeEvent {
+  id        String   @id  // Stripe event ID
+  type      String
+  processed Boolean  @default(false)
+  data      Json
+  createdAt DateTime @default(now())
+}
