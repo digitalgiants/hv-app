@@ -1,5 +1,6 @@
 services:
   caddy:
+    profiles: ["caddy"]
     image: caddy:2-alpine
     restart: unless-stopped
     ports:
@@ -20,6 +21,8 @@ services:
       context: ./app
       dockerfile: Dockerfile
     restart: unless-stopped
+    ports:
+      - "3001:3000"
     environment:
       DATABASE_URL: postgresql://hvuser:${POSTGRES_PASSWORD}@postgres:5432/hvapp
       REDIS_URL: redis://redis:6379

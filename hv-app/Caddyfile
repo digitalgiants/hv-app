@@ -1,3 +1,5 @@
+# In-compose Caddy (docker compose --profile caddy up): uses internal network
+# Host Caddy (default): proxy to localhost:3001 instead of app:3000
 yourdomain.com {
     reverse_proxy app:3000
 
