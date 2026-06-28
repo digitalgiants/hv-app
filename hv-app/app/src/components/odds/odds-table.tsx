@@ -49,7 +49,6 @@ export function OddsTable({ horses }: Props) {
 
   // Sort by PP descending
   const sorted = [...rows].sort((a, b) => b.pp - a.pp)
-  const maxDiff = Math.max(...rows.map(r => Math.abs(r.diff ?? 0)), 0.01)
 
   return (
     <div className="space-y-2">
@@ -67,7 +66,7 @@ export function OddsTable({ horses }: Props) {
         <span>Value</span>
       </div>
 
-      {sorted.map(({ horse, pp, ppProb, fairOdds, diff }) => {
+      {sorted.map(({ horse, pp, fairOdds, diff }) => {
         const ml = horse.morningLine
         const mlStr = ml != null
           ? ml < 1 ? `${Math.round(1 / ml)}/5` : ml === 1 ? '1/1' : `${ml % 1 === 0.5 ? `${Math.round(ml * 2)}/2` : `${Math.round(ml)}/1`}`

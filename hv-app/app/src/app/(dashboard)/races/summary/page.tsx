@@ -37,9 +37,10 @@ function ppColor(pp: number | undefined, ppSum: number): string {
 export default async function SummaryPage({
   searchParams,
 }: {
-  searchParams: Promise<{ date?: string }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
-  const { date } = await searchParams
+  const raw  = await searchParams
+  const date = Array.isArray(raw.date) ? raw.date[0] : raw.date
 
   // All distinct race dates, descending
   const allDates = await db.race.findMany({
