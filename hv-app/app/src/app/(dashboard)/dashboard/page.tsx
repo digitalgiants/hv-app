@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { CsvUpload } from "@/components/import/csv-upload"
 
 export default function DashboardPage() {
   return (
@@ -24,10 +25,10 @@ export default function DashboardPage() {
           </p>
         </Link>
 
-        <div className="bg-slate-900 border border-slate-800 border-dashed rounded-xl p-5 opacity-50">
-          <p className="text-xs uppercase tracking-widest text-slate-600 mb-1">Coming soon</p>
-          <h2 className="text-slate-400 font-semibold">Import CSV</h2>
-          <p className="text-slate-600 text-sm mt-1">Upload Brisnet or Equibase files</p>
+        <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
+          <p className="text-xs uppercase tracking-widest text-sky-400 mb-1">Import</p>
+          <h2 className="text-white font-semibold mb-3">Upload Brisnet CSV</h2>
+          <CsvUpload />
         </div>
       </div>
     </div>

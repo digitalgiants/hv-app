@@ -93,6 +93,7 @@ model Race {
   raceType   String   // "Stakes" | "Allowance" | "Claiming" | "Maiden" etc.
   purse      Int?
   conditions String?
+  payouts    Json?   // { win: number, place: number, show: number } — $2 payouts
   entries    Entry[]
 
   createdAt DateTime @default(now())

@@ -5,7 +5,7 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   const session = getSessionCookie(request)
 
-  const isProtected = pathname.startsWith("/dashboard") || pathname.startsWith("/admin")
+  const isProtected = pathname.startsWith("/dashboard") || pathname.startsWith("/admin") || pathname.startsWith("/races")
   const isAuthPage = pathname.startsWith("/login") || pathname.startsWith("/register")
 
   if (isProtected && !session) {

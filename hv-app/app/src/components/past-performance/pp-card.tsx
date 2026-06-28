@@ -7,8 +7,8 @@ interface Props {
   horse: PPHorse
 }
 
-function WorkoutLine({ date, track, distance, time, mark, rank }: {
-  date: string; track: string; distance: number; time: string; mark?: string; rank?: string
+function WorkoutLine({ date, track, distance, time, mph, mark, rank }: {
+  date: string; track: string; distance: number; time: string; mph?: number; mark?: string; rank?: string
 }) {
   const distMap: Record<number, string> = {
     330: "3f", 440: "2f", 660: "3f", 880: "4f", 1100: "5f", 1320: "6f"
@@ -17,6 +17,7 @@ function WorkoutLine({ date, track, distance, time, mark, rank }: {
   return (
     <span className="text-[10px] text-slate-500 whitespace-nowrap">
       {date} {track} {distLabel} {time}
+      {mph != null && <span className="text-slate-600 ml-1">{mph}mph</span>}
       {mark === "B" && <span className="text-yellow-400 ml-0.5">•</span>}
       {rank && <span className="text-slate-600 ml-0.5">({rank})</span>}
     </span>
@@ -49,7 +50,7 @@ export function PPCard({ horse }: Props) {
           Past Performances
         </p>
         <div className="overflow-x-auto">
-          <div className="min-w-[640px]">
+          <div className="min-w-[820px]">
             <PastStartHeader />
             {horse.pastStarts.map((start, i) => (
               <PastStartRow key={`${start.date}-${start.track}`} start={start} index={i} />
