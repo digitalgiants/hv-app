@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { db } from '@/lib/db'
 import { entryToPPHorse } from '@/lib/entry-to-horse'
 
+export const dynamic = 'force-dynamic'
+
 function distLabel(yards: number) {
   const map: Record<number, string> = {
     660: '3f', 880: '4f', 1100: '5f', 1210: '5½f', 1320: '6f',

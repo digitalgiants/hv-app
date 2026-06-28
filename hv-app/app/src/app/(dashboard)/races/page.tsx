@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { db } from '@/lib/db'
 
+export const dynamic = 'force-dynamic'
+
 function surfaceLabel(s: string) {
   if (s === 'T')  return 'Turf'
   if (s === 'AW') return 'AW'

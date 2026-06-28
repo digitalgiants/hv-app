@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { db } from '@/lib/db'
+
+export const dynamic = 'force-dynamic'
 import { entryToPPHorse } from '@/lib/entry-to-horse'
 import { OddsTable } from '@/components/odds/odds-table'
 import { BetSuggestions } from '@/components/odds/bet-suggestions'
