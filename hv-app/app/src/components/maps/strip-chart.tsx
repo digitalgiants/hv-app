@@ -132,7 +132,7 @@ function mlStr(ml: number | undefined): string {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function makeYTick(rankedHorses: RankedHorse[]) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return function YTick(props: any): React.ReactElement {
+  return function YTick(props: any) {
     const { x, y, payload } = props
     const rh = rankedHorses.find(r => r.rank === payload?.value)
     if (!rh) return <g />
@@ -332,7 +332,8 @@ export function StripChart({ rankedHorses, speedPar }: Props) {
                 dataKey="y"
                 domain={[0.5, N + 0.5]}
                 ticks={ranks}
-                tick={YTick}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                tick={YTick as any}
                 width={100}
                 tickLine={false}
                 axisLine={false}
