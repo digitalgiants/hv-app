@@ -92,6 +92,12 @@ export default async function RaceAnalysisPage({
               </div>
             ) : null}
             <Link
+              href={`/races/${raceId}/maps`}
+              className="px-3 py-1.5 rounded-lg bg-violet-900/50 border border-violet-700 text-violet-300 text-sm font-medium hover:bg-violet-800/60 transition-colors"
+            >
+              Maps
+            </Link>
+            <Link
               href={`/races/${raceId}/odds`}
               className="px-3 py-1.5 rounded-lg bg-sky-900/50 border border-sky-700 text-sky-300 text-sm font-medium hover:bg-sky-800/60 transition-colors"
             >
