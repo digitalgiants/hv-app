@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import React, { useState, useMemo } from 'react'
 import {
   ScatterChart,
   Scatter,
@@ -132,10 +132,10 @@ function mlStr(ml: number | undefined): string {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function makeYTick(rankedHorses: RankedHorse[]) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return function YTick(props: any) {
+  return function YTick(props: any): React.ReactElement {
     const { x, y, payload } = props
     const rh = rankedHorses.find(r => r.rank === payload?.value)
-    if (!rh) return null
+    if (!rh) return <g />
 
     const postStr = `${rh.horse.postPosition}. `
     const maxName = 13 - postStr.length
